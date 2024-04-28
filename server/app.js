@@ -12,12 +12,12 @@ var authRouter = require('./routes/auth');
 
 var app = express();
 app.use(cookieSession({
-  secret: "s3cr3tk3y",                                
+  secret: "s3cr3tk3y",
   maxAge: 1000 * 60 * 60,
 }));
 app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
+  origin: "http://127.0.0.1:5173",
+  credentials: true,
 }));
 
 // view engine setup
