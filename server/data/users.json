@@ -9,6 +9,26 @@
   },
   {
     "email": "sara@email.com",
-    "password": "$2b$10$4QpcgoPfWeAKsgsnJFMTV.WAKCi3MPdyM4YeOwED/DsKzDlRfJ3Xu"
+    "password": "$2b$10$UN2K3tN2fqxNczvdqq.pHuewthYFUivKXyCEFEou9Hft692e6/INy"
+  },
+  {
+    "email": "hel@gmail.com",
+    "password": "$2b$10$XBn2lOYw61kzGAEmdd/V1.VodjNkq.pzt6jFyu47f6VH4Fz4zL0q6"
+  },
+  {
+    "email": "kalle@email.com",
+    "password": "$2b$10$eNzoigkEqqwAXk1MBZXmBuam6VfW2j1JvNHa4oyeEktmrByLCw7PG"
+  },
+  {
+    "email": "sara",
+    "password": "$2b$10$PEdC8Uy5LCAfankUwpITluMv5kb1bagndyysPSJLiwiUOB6SbP0q2"
+  },
+  {
+    "email": "aa",
+    "password": "$2b$10$KSJuT6/y1tcJnQJby2eJOuNbW0tIkIgKLldyZp1DiXSp.k5Y6Je/i"
+  },
+  {
+    "email": "ss",
+    "password": "$2b$10$7BMRIo0AnLOQQ/Okn8/A4eP.ZL2GTWBptZaczbVE5XIcOshol02YW"
   }
 ]

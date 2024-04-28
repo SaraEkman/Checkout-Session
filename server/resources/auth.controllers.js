@@ -32,6 +32,8 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     const { email, password } = req.body;
 
+    console.log("req.body", req.body)
+     
     const users = await fetchUsers();
     const userExists = users.find(u => u.email === email);
     console.log(userExists);
@@ -44,6 +46,7 @@ const login = async (req, res) => {
     //Skapa en session
     req.session.user = userExists;
     //Skicka tillbaka ett svar
+    console.log(req.session);
     res.status(200).json(userExists.email);
 };
 
@@ -53,6 +56,7 @@ const logout = (req, res) => {
 };
 
 const authorize = (req, res) => {
+    console.log(req.session.user);
     if (!req.session.user) {
         return res.status(401).json("You are not logged in");
     }

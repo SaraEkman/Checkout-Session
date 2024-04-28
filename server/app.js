@@ -5,16 +5,22 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require("cors");
 const cookieSession = require("cookie-session");
+require("dotenv").config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
+const stripeRouter = require("./routes/stripe");
 
 var app = express();
 app.use(cookieSession({
   secret: "s3cr3tk3y",
-  maxAge: 1000 * 60 * 60,
+  // secure: true,
+  httpOnly: true,
+  maxAge: 24 * 60 * 60 * 1000 * 7, // 7 days
+  // domain: "http://localhost:5173",
 }));
+
 app.use(cors({
   origin: "http://127.0.0.1:5173",
   credentials: true,
@@ -33,11 +39,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use("/api/auth", authRouter);
+app.use("/payments", stripeRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
+
+// console.log(process.env);
 
 // error handler
 app.use(function (err, req, res, next) {
