@@ -16,11 +16,13 @@ const createCheckoutSession = async (req, res) => {
                 quantity: item.quantity
             };
         }),
-        success_url: "http://localhost:5173/confirmation",
-        cancel_url: "http://localhost:5173",
+        success_url: "http://127.0.0.1:5173/confirmation",
+        cancel_url: "http://127.0.0.1:5173",
     });
 
     res.status(200).json({ url: session.url, sessionId: session.id });
+
+    // res.json("hej");
 };
 
 const verifySession = async (req, res) => {
