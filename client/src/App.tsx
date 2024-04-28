@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import Form from './components/Form'
 import { IInputs } from './modules/IInputs'
+import Payment from './components/Payment'
 
 function App() {
   const [user, setUser] = useState<string>("")
@@ -79,6 +80,15 @@ function App() {
     
   }
 
+  const handlePayment = async () => { 
+    const response = await fetch("http://localhost:3000/payments/create-checkout-session", {
+      method: "POST",
+      credentials: "include"
+    })
+    const data = await response.json()
+    console.log(data)
+  }
+
 
   return (
     <>
@@ -89,11 +99,15 @@ function App() {
           showRegisterForm ? {backgroundColor: "blue"} : {backgroundColor: "black"}
         } onClick={register}>Registrera</button>
         
-        <button style={showLoginForm ? {backgroundColor: "blue"} : {backgroundColor: "black"}} onClick={login}>Login</button>
+        <button style={showLoginForm ? { backgroundColor: "blue" } : { backgroundColor: "black" }} onClick={login}>Login</button>
+        
+        <button type="button" onClick={handlePayment}>Betala</button>
   
         <button onClick={logout}>Logout</button>
 
-       {showRegisterForm ? <Form onClick={onClick} /> : showLoginForm && <Form onClick={onClick} />}
+        {showRegisterForm ? <Form onClick={onClick} /> : showLoginForm && <Form onClick={onClick} />}
+        
+        <Payment />
       </div>
     </>
   )
