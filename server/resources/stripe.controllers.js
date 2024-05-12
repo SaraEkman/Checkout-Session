@@ -9,7 +9,6 @@ const createCheckoutSession = async (req, res) => {
 
     const session = await stripe.checkout.sessions.create({
         mode: "payment",
-        customer: "cus_PYQ493vJESIJCD",
         line_items: cart.map(item => {
             return {
                 price: item.product,
@@ -20,9 +19,10 @@ const createCheckoutSession = async (req, res) => {
         cancel_url: "http://127.0.0.1:5173",
     });
 
+    console.log(cart);
+
     res.status(200).json({ url: session.url, sessionId: session.id });
 
-    // res.json("hej");
 };
 
 const verifySession = async (req, res) => {
@@ -31,11 +31,14 @@ const verifySession = async (req, res) => {
     console.log("Nu kommer jag hit");
 
     const sessionId = req.body.sessionId;
+    console.log(sessionId);
 
     const session = await stripe.checkout.sessions.retrieve(sessionId);
+    console.log(session);
 
     if (session.payment_status === "paid") {
         const lineItems = await stripe.checkout.sessions.listLineItems(sessionId);
+        console.log(lineItems);
 
 
         const order = {
@@ -46,9 +49,11 @@ const verifySession = async (req, res) => {
             date: new Date()
         };
 
-        const orders = JSON.parse(await fs.readFile("./orders.json"));
+        console.log("orddddddddddddddddder", order);
+
+        const orders = JSON.parse(await fs.readFile("./data/orders.json"));
         orders.push(order);
-        await fs.writeFile("./orders.json", JSON.stringify(orders, null, 4));
+        await fs.writeFile("./data/orders.json", JSON.stringify(orders, null, 4));
 
         res.status(200).json({ verified: true });
     }

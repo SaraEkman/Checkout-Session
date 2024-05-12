@@ -1,7 +1,7 @@
 const Payment = () => {
   const handlePayment = async () => {
     const response = await fetch(
-      "http://localhost:3000/payments/create-checkout-session",
+      "http://localhost:3000/api/payments/create-checkout-session",
       {
         method: "POST",
         headers: {
@@ -9,11 +9,11 @@ const Payment = () => {
         },
         body: JSON.stringify([
           {
-            product: "price_1OjJm3KDYG89Sk1MV6TKHCWy",
+            product: "price_1PAYwGP46Bs56q5IcWErEpEV",
             quantity: 3
           },
           {
-            product: "price_1OjJkTKDYG89Sk1MeWycVhcr",
+            product: "price_1PAYvqP46Bs56q5I3HqJX4PL",
             quantity: 1
           }
         ])

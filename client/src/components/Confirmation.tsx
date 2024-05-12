@@ -12,13 +12,15 @@ const Confirmation = () => {
           console.log("och jag hoppar in i funktionen");
           let sessionId;
           const dataFromLs = localStorage.getItem("sessionId");
+          console.log("dataFromLs", dataFromLs);
 
           if (dataFromLs) {
             sessionId = JSON.parse(dataFromLs);
+            console.log("sessionId", sessionId);
           }
 
           const response = await fetch(
-            "http://localhost:3000/payments/verify-session",
+            "http://localhost:3000/api/payments/verify-session",
             {
               method: "POST",
               headers: {
@@ -29,6 +31,7 @@ const Confirmation = () => {
           );
 
           const data = await response.json();
+          console.log("halllllllllllo", data);
 
           if (response.ok) {
             setVerified(data.verified);
@@ -44,9 +47,8 @@ const Confirmation = () => {
 
   return (
     <div>
-      <h3>
-        {verified && !isLoading ? "TACK FÖR DITT KÖP ✅" : "LOADING..."}
-      </h3>
+      Hej
+      <h3>{verified && !isLoading ? "TACK FÖR DITT KÖP ✅" : "LOADING..."}</h3>
     </div>
   );
 };

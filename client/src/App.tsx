@@ -80,14 +80,15 @@ function App() {
     
   }
 
-  const handlePayment = async () => { 
-    const response = await fetch("http://localhost:3000/payments/create-checkout-session", {
-      method: "POST",
-      credentials: "include"
-    })
-    const data = await response.json()
-    console.log(data)
-  }
+  // const handlePayment = async () => { 
+  //   const response = await fetch("http://localhost:3000/payments/create-checkout-session", {
+  //     method: "POST",
+  //     credentials: "include"
+  //   })
+  //   const data = await response.json()
+  //   console.log(data)
+  //   window.location = data.url
+  // }
 
 
   return (
@@ -96,18 +97,18 @@ function App() {
         <h1>{user ? "INLOGGAD:" + user : "UTLOGGAD"}</h1>
 
         <button style={
-          showRegisterForm ? {backgroundColor: "blue"} : {backgroundColor: "black"}
+          showRegisterForm ? {backgroundColor: "blue"} : {backgroundColor: "green"}
         } onClick={register}>Registrera</button>
         
-        <button style={showLoginForm ? { backgroundColor: "blue" } : { backgroundColor: "black" }} onClick={login}>Login</button>
+        <button style={showLoginForm ? { backgroundColor: "blue" } : { backgroundColor: "green" }} onClick={login}>Login</button>
         
-        <button type="button" onClick={handlePayment}>Betala</button>
-  
+        {/* <button type="button" onClick={handlePayment}>Betala</button>
+   */}
+        <Payment />
         <button onClick={logout}>Logout</button>
 
         {showRegisterForm ? <Form onClick={onClick} /> : showLoginForm && <Form onClick={onClick} />}
         
-        <Payment />
       </div>
     </>
   )

@@ -1,1 +1,20 @@
-POST http://localhost:3000/payments/create-checkout-session 
+POST http://localhost:3000/api/payments/create-checkout-session 
+Content-Type: application/json
+
+[
+          {
+            "product": "price_1OjJm3KDYG89Sk1MV6TKHCWy",
+            "quantity": 3
+          },
+          {
+            "product": "price_1OjJkTKDYG89Sk1MeWycVhcr",
+            "quantity": 1
+        }]
+
+###
+POST http://localhost:3000/api/payments/verify-session    
+Content-Type: application/json
+
+{
+    "sessionId": "cs_test_b1kJU2XA8z0h9dZ3EnZIKbp8X4ftKkQzhflxtJ2JV3TRnkmBtOeqetR1js"
+}
