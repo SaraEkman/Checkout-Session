@@ -20,7 +20,7 @@ const Confirmation = () => {
           }
 
           const response = await fetch(
-            "http://localhost:3000/api/payments/verify-session",
+            "http://localhost:3000/api/stripe/verify-session",
             {
               method: "POST",
               headers: {

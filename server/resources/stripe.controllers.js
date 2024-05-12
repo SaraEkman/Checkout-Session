@@ -60,4 +60,11 @@ const verifySession = async (req, res) => {
 
 };
 
-module.exports = { createCheckoutSession, verifySession };
+const fetchAllProducts = async (req,res) => {
+    const stripe = initStripe();
+    const products = await stripe.products.list();
+    console.log(products.data);
+    res.status(200).json(products.data);
+};
+
+module.exports = { createCheckoutSession, verifySession, fetchAllProducts };

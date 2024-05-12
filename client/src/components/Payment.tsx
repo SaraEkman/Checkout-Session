@@ -1,7 +1,7 @@
 const Payment = () => {
   const handlePayment = async () => {
     const response = await fetch(
-      "http://localhost:3000/api/payments/create-checkout-session",
+      "http://localhost:3000/api/stripe/create-checkout-session",
       {
         method: "POST",
         headers: {

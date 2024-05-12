@@ -3,6 +3,8 @@ import './App.css'
 import Form from './components/Form'
 import { IInputs } from './modules/IInputs'
 import Payment from './components/Payment'
+import Products from './components/Products'
+
 
 function App() {
   const [user, setUser] = useState<string>("")
@@ -104,6 +106,8 @@ function App() {
         
         {/* <button type="button" onClick={handlePayment}>Betala</button>
    */}
+        <Products />
+      
         <Payment />
         <button onClick={logout}>Logout</button>
 

@@ -1,4 +1,4 @@
-POST http://localhost:3000/api/payments/create-checkout-session 
+POST http://localhost:3000/api/stripe/create-checkout-session 
 Content-Type: application/json
 
 [
@@ -12,9 +12,12 @@ Content-Type: application/json
         }]
 
 ###
-POST http://localhost:3000/api/payments/verify-session    
+POST http://localhost:3000/api/stripe/verify-session    
 Content-Type: application/json
 
 {
     "sessionId": "cs_test_b1kJU2XA8z0h9dZ3EnZIKbp8X4ftKkQzhflxtJ2JV3TRnkmBtOeqetR1js"
 }
+
+###
+GET  http://localhost:3000/api/stripe/products
