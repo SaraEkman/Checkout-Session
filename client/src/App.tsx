@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import Form from './components/Form'
-import { IInputs } from './modules/IInputs'
 import Payment from './components/Payment'
 import Products from './components/Products'
 
 
 function App() {
-  const [user, setUser] = useState<string>("")
-  const [showRegisterForm, setShowRegisterForm] = useState<boolean>(false)
-  const [showLoginForm, setShowLoginForm] = useState<boolean>(false)
+  const [user, setUser] = useState({
+    email: "",
+    customerId: 0, 
+  })
+  const [showForm, setShowForm] = useState<'login' | 'register' | null>(null);
+
 
   useEffect(() => {
     const authorize = async () => {
@@ -20,24 +22,14 @@ function App() {
 
       const data = await response.json()
       if (response.status === 200) {
-        setUser(data.email)
+        setUser(data)
       } else {
-        setUser("")
+        setUser({ email: "", customerId: 0 })
       }
     }
     authorize()
   }, [])
   console.log(user)
-
-  const register = async () => {
-    setShowRegisterForm(!showRegisterForm)
-    setShowLoginForm(false)
-  }
-
-  const login = async () => {
-    setShowLoginForm(!showLoginForm)
-    setShowRegisterForm(false)
-  }
 
   const logout = async () => {
     const response = await fetch("http://localhost:3001/api/auth/logout", {
@@ -46,44 +38,9 @@ function App() {
     })
 
     if (response.status === 200) {
-      setUser("")
+      setUser({ email: "", customerId: 0 })
     }
-    setShowLoginForm(false)
-    setShowRegisterForm(false)
-  }
-
-  const onClick = async (inputs: IInputs) => {
-    console.log(inputs)
-    if (showRegisterForm) {
-      const response = await fetch("http://localhost:3001/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(inputs)
-      })
-      const data = await response.json()
-      console.log(data)
-      setShowRegisterForm(false)
-    } else if (showLoginForm) {
-      const response = await fetch("http://localhost:3001/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        credentials: "include",
-        body: JSON.stringify(inputs)
-      })
-      const data = await response.json()
-
-      if (response.status === 200) {
-        setUser(data)
-      } else {
-        setUser("")
-      }
-    }
-    setShowLoginForm(false)
-
+    setShowForm(null);
   }
 
   // const handlePayment = async () => { 
@@ -96,27 +53,33 @@ function App() {
   //   window.location = data.url
   // }
 
+  const handleFormToggle = (formType: 'login' | 'register') => {
+    if (user.email) {
+      return; // If the user is logged in, do not toggle forms
+    }
+    setShowForm(prevState => prevState === formType ? null : formType);
+  };
+
 
   return (
     <>
-      <div>
-        <h1>{user ? "INLOGGAD:" + user : "UTLOGGAD"}</h1>
-
-        <button style={
-          showRegisterForm ? { backgroundColor: "blue" } : { backgroundColor: "green" }
-        } onClick={register}>Registrera</button>
-
-        <button style={showLoginForm ? { backgroundColor: "blue" } : { backgroundColor: "green" }} onClick={login}>Login</button>
-
-        {/* <button type="button" onClick={handlePayment}>Betala</button>
-   */}
+       <div>
+        <h1>{user.email ? `INLOGGAD: ${user.email}` : "UTLOGGAD"}</h1>         
+        {!user.email ? (
+          <>
+            <button onClick={() => handleFormToggle('register')} className={`button button-register ${showForm === 'register' ? 'active' : ''}`}>
+              Registrera
+            </button>
+            <button onClick={() => handleFormToggle('login')} className={`button button-login ${showForm === 'login' ? 'active' : ''}`}>
+              Login
+            </button>
+            {showForm && <Form formType={showForm} onFormSubmit={setUser} />}
+          </>
+        ) : <>
+            <button onClick={logout} className="button logout-button">Logout</button>
         <Products />
-
         <Payment />
-        <button onClick={logout}>Logout</button>
-
-        {showRegisterForm ? <Form onClick={onClick} /> : showLoginForm && <Form onClick={onClick} />}
-
+        </>}
       </div>
     </>
   )

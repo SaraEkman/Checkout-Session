@@ -1,47 +1,42 @@
 import React, { useState } from "react";
 import { IInputs } from "../modules/IInputs";
-
 interface IFormProps {
-  onClick: (inputs: IInputs) => void;
+   formType: 'login' | 'register';
+   onFormSubmit: (user: { email: string; customerId: number }) => void;
 }
 
-const Form = ({ onClick }: IFormProps) => {
-  const [inputs, setInputs] = useState({ email: "", password: "" });
+const Form = ({ formType, onFormSubmit }: IFormProps) => {
+  const [inputs, setInputs] = useState<IInputs>({ email: "", password: "" });
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const endpoint = `http://localhost:3001/api/auth/${formType}`;
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(inputs)
+    });
+    const data = await response.json();
+    if (response.status === 200) {
+      onFormSubmit(data);
+    }
+    setInputs({ email: "", password: "" }); 
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(inputs);
-    if (!inputs.email || !inputs.password) {
-      return;
-    }
-    onClick(inputs);
-  };
 
-  return (
-    <div>
-      <form onClick={onSubmit}>
-        <input
-          name="email"
-          type="text"
-          placeholder="email"
-          autoComplete="off"
-          onChange={handleChange}
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="password"
-          autoComplete="off"
-          onChange={handleChange}
-        />
-        <button type="submit">Submit</button>
+  return <div className="form-container">
+      <form onSubmit={handleSubmit}>
+        <input className="input-field" name="email" type="email" placeholder="Email" autoComplete="off" value={inputs.email} onChange={handleChange} />
+        <input className="input-field" name="password" type="password" placeholder="Password" autoComplete="off" value={inputs.password} onChange={handleChange} />
+        <button className="button" type="submit">
+          {formType === "login" ? "Login" : "Register"}
+        </button>
       </form>
-    </div>
-  );
+    </div>;
 };
 
 export default Form;

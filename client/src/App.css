@@ -18,6 +18,77 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+body {
+  font-family: Arial, sans-serif;
+}
+
+/* Form styling */
+.form-container {
+  margin: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.input-field {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.button {
+  padding: 10px 15px;
+  font-size: 16px;
+  color: white;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.button:active {
+  background-color: #00408b;
+}
+
+.logout-button {
+  background-color: #dc3545;
+}
+
+.logout-button:hover {
+  background-color: #c82333;
+}
+
+.button-register.active,
+.button-login.active {
+  background-color: #28a745; /* Green for active state */
+}
+
+.button-register:not(.active),
+.button-login:not(.active) {
+  background-color: #6c757d; /* Grey when not active */
+}
+
+.logout-button {
+  background-color: #dc3545; /* Red for logout button */
+}
+
+.logout-button:hover {
+  background-color: #c82333; /* Darker red on hover */
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
