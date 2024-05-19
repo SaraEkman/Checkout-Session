@@ -5,14 +5,17 @@ interface Product {
   name: string;
   description: string;
   images: string[];
-  default_price: string;
+  default_price: {
+    currency: string;
+    unit_amount: number;
+  };
 }
 
 const Products = () => {
   const [products, setProducts] = React.useState<Product[]>([]);
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await fetch("http://localhost:3000/api/stripe/products");
+      const response = await fetch("http://localhost:3001/api/stripe/products");
       const data = await response.json();
       setProducts(data);
       localStorage.setItem("products", JSON.stringify(data));
@@ -65,11 +68,13 @@ const Products = () => {
           alt={name}
         />
         <h4>
-          {default_price}
+          {default_price.unit_amount / 100} {default_price.currency}
         </h4>
         <button
           onClick={() => {
-            handleAddProduct(default_price);
+            handleAddProduct(
+              default_price.currency + default_price.unit_amount / 100
+            );
           }}
         >
           Lägga till

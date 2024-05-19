@@ -1,4 +1,4 @@
-POST http://localhost:3000/api/stripe/create-checkout-session 
+POST http://localhost:3001/api/stripe/create-checkout-session 
 Content-Type: application/json
 
 [
@@ -12,7 +12,7 @@ Content-Type: application/json
         }]
 
 ###
-POST http://localhost:3000/api/stripe/verify-session    
+POST http://localhost:3001/api/stripe/verify-session    
 Content-Type: application/json
 
 {
@@ -20,4 +20,4 @@ Content-Type: application/json
 }
 
 ###
-GET  http://localhost:3000/api/stripe/products
+GET  http://localhost:3001/api/stripe/products

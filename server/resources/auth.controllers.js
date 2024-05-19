@@ -11,7 +11,7 @@ const register = async (req, res) => {
     const userAlreadyExists = users.find(u => u.email === email);
 
     if (userAlreadyExists) {
-        return res.status(400).json("User already exists");
+        return res.status(400).json({ error: "User already exists" });
     }
 
     //Kryptera lösenordet
@@ -32,35 +32,35 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     const { email, password } = req.body;
 
-    console.log("req.body", req.body)
-     
+    console.log("req.body", req.body);
+
     const users = await fetchUsers();
     const userExists = users.find(u => u.email === email);
     console.log(userExists);
 
     //Kolla så att lösenordet stämmer och att användaren finns
     if (!userExists || !await bcrypt.compare(password, userExists.password)) {
-        return res.status(400).json("Wrong user or password");
+        return res.status(400).json({ error: "Invalid email or password" });
     }
 
     //Skapa en session
     req.session.user = userExists;
     //Skicka tillbaka ett svar
-    console.log(req.session);
+    console.log("från log in ",req.session);
     res.status(200).json(userExists.email);
 };
 
 const logout = (req, res) => {
     req.session = null;
-    res.status(200).json("Successfully logged out");
+    res.status(200).json({ message: "Logged out" });
 };
 
 const authorize = (req, res) => {
-    console.log(req.session.user);
+    console.log(req.session);
     if (!req.session.user) {
-        return res.status(401).json("You are not logged in");
+        return res.status(401).json({ error: "Unauthorized" });
     }
-    res.status(200).json(req.session.user.email);
+    res.status(200).json({ email: req.session.user.email});
 };
 
 module.exports = { register, login, logout, authorize };

@@ -8,18 +8,19 @@ import Products from './components/Products'
 
 function App() {
   const [user, setUser] = useState<string>("")
-  const [showRegisterForm,  setShowRegisterForm] = useState<boolean>(false)
+  const [showRegisterForm, setShowRegisterForm] = useState<boolean>(false)
   const [showLoginForm, setShowLoginForm] = useState<boolean>(false)
 
   useEffect(() => {
     const authorize = async () => {
-      const response = await fetch("http://localhost:3000/api/auth/authorize", {
-        credentials: "include"
-      })
+      const response = await fetch("http://localhost:3001/api/auth/authorize",
+        {
+          credentials: "include"
+        })
 
       const data = await response.json()
       if (response.status === 200) {
-        setUser(data)
+        setUser(data.email)
       } else {
         setUser("")
       }
@@ -30,14 +31,16 @@ function App() {
 
   const register = async () => {
     setShowRegisterForm(!showRegisterForm)
+    setShowLoginForm(false)
   }
 
   const login = async () => {
     setShowLoginForm(!showLoginForm)
+    setShowRegisterForm(false)
   }
 
   const logout = async () => {
-    const response = await fetch("http://localhost:3000/api/auth/logout", {
+    const response = await fetch("http://localhost:3001/api/auth/logout", {
       method: "POST",
       credentials: "include"
     })
@@ -50,8 +53,9 @@ function App() {
   }
 
   const onClick = async (inputs: IInputs) => {
+    console.log(inputs)
     if (showRegisterForm) {
-      const response = await fetch("http://localhost:3000/api/auth/register", {
+      const response = await fetch("http://localhost:3001/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -62,7 +66,7 @@ function App() {
       console.log(data)
       setShowRegisterForm(false)
     } else if (showLoginForm) {
-      const response = await fetch("http://localhost:3000/api/auth/login", {
+      const response = await fetch("http://localhost:3001/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -79,11 +83,11 @@ function App() {
       }
     }
     setShowLoginForm(false)
-    
+
   }
 
   // const handlePayment = async () => { 
-  //   const response = await fetch("http://localhost:3000/payments/create-checkout-session", {
+  //   const response = await fetch("http://localhost:3001/payments/create-checkout-session", {
   //     method: "POST",
   //     credentials: "include"
   //   })
@@ -99,20 +103,20 @@ function App() {
         <h1>{user ? "INLOGGAD:" + user : "UTLOGGAD"}</h1>
 
         <button style={
-          showRegisterForm ? {backgroundColor: "blue"} : {backgroundColor: "green"}
+          showRegisterForm ? { backgroundColor: "blue" } : { backgroundColor: "green" }
         } onClick={register}>Registrera</button>
-        
+
         <button style={showLoginForm ? { backgroundColor: "blue" } : { backgroundColor: "green" }} onClick={login}>Login</button>
-        
+
         {/* <button type="button" onClick={handlePayment}>Betala</button>
    */}
         <Products />
-      
+
         <Payment />
         <button onClick={logout}>Logout</button>
 
         {showRegisterForm ? <Form onClick={onClick} /> : showLoginForm && <Form onClick={onClick} />}
-        
+
       </div>
     </>
   )

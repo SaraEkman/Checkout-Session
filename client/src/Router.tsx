@@ -4,6 +4,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Payment from "./components/Payment";
 import Products from "./components/Products";
 import { Layout } from "./components/Layout";
+import Card from "./components/Card";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ export const router = createBrowserRouter([
       {
         path: "/products",
         element: <Products />
+      },
+      {
+        path: "/card",
+        element: <Card title="Title" description="Description" />
       }
     ]
   }

@@ -15,8 +15,8 @@ const createCheckoutSession = async (req, res) => {
                 quantity: item.quantity
             };
         }),
-        success_url: "http://127.0.0.1:5173/confirmation",
-        cancel_url: "http://127.0.0.1:5173",
+        success_url: "http://localhost:3000/confirmation",
+        cancel_url: "http://localhost:3000",
     });
 
     console.log(cart);
@@ -60,9 +60,9 @@ const verifySession = async (req, res) => {
 
 };
 
-const fetchAllProducts = async (req,res) => {
+const fetchAllProducts = async (req, res) => {
     const stripe = initStripe();
-    const products = await stripe.products.list();
+    const products = await stripe.products.list({ expand: ['data.default_price'] });
     console.log(products.data);
     res.status(200).json(products.data);
 };
