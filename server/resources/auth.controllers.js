@@ -1,9 +1,10 @@
 const fs = require("fs").promises;
 const bcrypt = require("bcrypt");
 const fetchUsers = require("../utils/fetchUsers.js");
+const initStripe = require("../stripe");
 
+const stripe = initStripe();
 const register = async (req, res) => {
-
     const { email, password } = req.body;
 
     //Kolla så att användaren inte redan finns
@@ -14,11 +15,17 @@ const register = async (req, res) => {
         return res.status(400).json({ error: "User already exists" });
     }
 
+    const customer = await stripe.customers.create({
+        email: email
+    });
+
+    console.log("customer", customer);
     //Kryptera lösenordet
     const hashedPassword = await bcrypt.hash(password, 10);
 
     //Sparar till databasen
     const newUser = {
+        customerId: customer.id,
         email,
         password: hashedPassword
     };
@@ -26,7 +33,7 @@ const register = async (req, res) => {
     await fs.writeFile("./data/users.json", JSON.stringify(users, null, 2));
 
     //Skicka tillbaka ett svar
-    res.status(201).json(newUser.email);
+    res.status(201).json({ email: newUser.email, customerId: customer.id, message: "User created"});
 };
 
 const login = async (req, res) => {
@@ -46,8 +53,11 @@ const login = async (req, res) => {
     //Skapa en session
     req.session.user = userExists;
     //Skicka tillbaka ett svar
-    console.log("från log in ",req.session);
-    res.status(200).json(userExists.email);
+
+    console.log("från log in ", req.session);
+    const customer = await stripe.customers.retrieve(userExists.customerId);
+    res.status(200).json({ email: userExists.email, customerId: customer.id });
+
 };
 
 const logout = (req, res) => {
@@ -60,7 +70,7 @@ const authorize = (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({ error: "Unauthorized" });
     }
-    res.status(200).json({ email: req.session.user.email});
+    res.status(200).json({ email: req.session.user.email, customerId: req.session.user.customerId});
 };
 
 module.exports = { register, login, logout, authorize };
