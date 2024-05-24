@@ -4,46 +4,43 @@ const Confirmation = () => {
   const [verified, setVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(
-    () => {
-      if (!verified) {
-        console.log("nu körs jag");
-        const verifySession = async () => {
-          console.log("och jag hoppar in i funktionen");
-          let sessionId;
-          const dataFromLs = localStorage.getItem("sessionId");
-          console.log("dataFromLs", dataFromLs);
+useEffect(
+  () => {
+    if (!verified) {
+      const verifySession = async () => {
+        const dataFromLs = localStorage.getItem("sessionId");
+        const sessionId = dataFromLs; 
 
-          if (dataFromLs) {
-            sessionId = JSON.parse(dataFromLs);
-            console.log("sessionId", sessionId);
-          }
+        try {
+          if (sessionId) {
+            const response = await fetch(
+              "http://localhost:3001/api/stripe/verify-session",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ sessionId })
+              }
+            );
 
-          const response = await fetch(
-            "http://localhost:3001/api/stripe/verify-session",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({ sessionId })
+            const data = await response.json();
+
+            if (response.ok) {
+              setVerified(data.verified);
+              setIsLoading(false);
             }
-          );
-
-          const data = await response.json();
-          console.log("halllllllllllo", data);
-
-          if (response.ok) {
-            setVerified(data.verified);
-            setIsLoading(false);
           }
-        };
+        } catch (error) {
+          console.error("Error verifying session:", error);
+        }
+      };
 
-        verifySession();
-      }
-    },
-    [verified]
-  );
+      verifySession();
+    }
+  },
+  [verified]
+);
 
   return (
     <div>
