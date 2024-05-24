@@ -3,17 +3,17 @@ import './App.css'
 import Form from './components/Form'
 import Payment from './components/Payment'
 import Products from './components/Products'
+import { CartProvider } from './context/CardContext'
+import { IInputs } from './modules/Types'
 
 
 function App() {
-  const [user, setUser] = useState({
-    email: "",
-    customerId: 0, 
-  })
+  const [user, setUser] = useState<IInputs | null>(null);
   const [showForm, setShowForm] = useState<'login' | 'register' | null>(null);
 
 
   useEffect(() => {
+    console.log("useEffect", user)
     const authorize = async () => {
       const response = await fetch("http://localhost:3001/api/auth/authorize",
         {
@@ -24,7 +24,7 @@ function App() {
       if (response.status === 200) {
         setUser(data)
       } else {
-        setUser({ email: "", customerId: 0 })
+        setUser(null)
       }
     }
     authorize()
@@ -38,34 +38,27 @@ function App() {
     })
 
     if (response.status === 200) {
-      setUser({ email: "", customerId: 0 })
+      setUser(null)
+      localStorage.removeItem("customerId")
+      localStorage.removeItem("sessionId")
+      localStorage.removeItem("address")
     }
     setShowForm(null);
   }
 
-  // const handlePayment = async () => { 
-  //   const response = await fetch("http://localhost:3001/payments/create-checkout-session", {
-  //     method: "POST",
-  //     credentials: "include"
-  //   })
-  //   const data = await response.json()
-  //   console.log(data)
-  //   window.location = data.url
-  // }
-
   const handleFormToggle = (formType: 'login' | 'register') => {
-    if (user.email) {
-      return; // If the user is logged in, do not toggle forms
+    if (user && user.email) {
+      return; 
     }
     setShowForm(prevState => prevState === formType ? null : formType);
   };
 
 
   return (
-    <>
-       <div>
-        <h1>{user.email ? `INLOGGAD: ${user.email}` : "UTLOGGAD"}</h1>         
-        {!user.email ? (
+    <> <CartProvider>
+      <div>
+        <h1>{user && user.email ? `INLOGGAD: ${user.email}` : "UTLOGGAD"}</h1>
+        {!user ? (
           <>
             <button onClick={() => handleFormToggle('register')} className={`button button-register ${showForm === 'register' ? 'active' : ''}`}>
               Registrera
@@ -76,11 +69,12 @@ function App() {
             {showForm && <Form formType={showForm} onFormSubmit={setUser} />}
           </>
         ) : <>
-            <button onClick={logout} className="button logout-button">Logout</button>
-        <Products />
-        <Payment />
+          <button onClick={logout} className="button logout-button">Logout</button>
+          <Products />
+          <Payment />
         </>}
       </div>
+    </CartProvider>
     </>
   )
 }

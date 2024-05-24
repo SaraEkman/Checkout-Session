@@ -5,7 +5,7 @@ const initStripe = require("../stripe");
 
 const stripe = initStripe();
 const register = async (req, res) => {
-    const { email, password } = req.body;
+    const { name,email, password, address } = req.body;
 
     //Kolla så att användaren inte redan finns
     const users = await fetchUsers();
@@ -16,7 +16,9 @@ const register = async (req, res) => {
     }
 
     const customer = await stripe.customers.create({
-        email: email
+        name: name,
+        email: email,
+        address: address
     });
 
     console.log("customer", customer);
@@ -26,14 +28,16 @@ const register = async (req, res) => {
     //Sparar till databasen
     const newUser = {
         customerId: customer.id,
-        email,
-        password: hashedPassword
+        name: name,
+        email: email,
+        password: hashedPassword,
+        address: address
     };
     users.push(newUser);
     await fs.writeFile("./data/users.json", JSON.stringify(users, null, 2));
 
     //Skicka tillbaka ett svar
-    res.status(201).json({ email: newUser.email, customerId: customer.id, message: "User created"});
+    res.status(200).json({ name: newUser.name, email: newUser.email, customerId: customer.id, address: newUser.address});
 };
 
 const login = async (req, res) => {
@@ -56,7 +60,7 @@ const login = async (req, res) => {
 
     console.log("från log in ", req.session);
     const customer = await stripe.customers.retrieve(userExists.customerId);
-    res.status(200).json({ email: userExists.email, customerId: customer.id });
+    res.status(200).json({ name: userExists.name, email: userExists.email, customerId: customer.id, address: customer.address});
 
 };
 

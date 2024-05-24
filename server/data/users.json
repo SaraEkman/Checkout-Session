@@ -1,12 +1,14 @@
 [
   {
-    "customerId": "cus_Q8Sqg4coCPQbDG",
+    "customerId": "cus_QARLMWSU20bAX5",
+    "name": "Sara Ekman",
     "email": "ss@gmail.com",
-    "password": "$2b$10$FiXGcbdRITeNnzfrjp/G6ugajSMZs0wUPu8XM8z3X0yVDAES0rrm6"
-  },
-  {
-    "customerId": "cus_Q8SvGZA6KeL3Hg",
-    "email": "sara@gmail.com",
-    "password": "$2b$10$Q8jaI0WJLXAUtUux5UEWHuSdQxTmqd1xqvWneQkWrDsrMzfqe4exi"
+    "password": "$2b$10$eCbRgblCG8Gt6XekHVuH3Od.NMlP5UfbvoN4ukC7cdJcjO2GUEUza",
+    "address": {
+      "city": "Box 2820",
+      "country": "Sverige",
+      "line1": "Box 2820",
+      "postal_code": "403 20"
+    }
   }
 ]
