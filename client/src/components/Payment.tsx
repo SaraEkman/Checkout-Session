@@ -11,27 +11,10 @@ const Payment = () => {
      setIsProcessing(true);
     const userData = JSON.parse(localStorage.getItem("data") || "{}");
     
-    console.log("userData", userData);
     const items = cart.map(item => ({
       price: item.default_price.id,
       quantity: item.quantity
     }));
-
-    // const response = await fetch(
-    //   "http://localhost:3001/api/stripe/create-checkout-session",
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json"
-    //     },
-    //     body: JSON.stringify({ userData, items })
-    //   }
-    // );
-
-    // const data = await response.json();
-    // localStorage.setItem("sessionId", data.sessionId);
-    // window.location.href = data.url;
-
 
       try {
         const response = await fetch(
@@ -50,8 +33,6 @@ const Payment = () => {
       } finally {
         setIsProcessing(false);
       }
-
-
   };
 
   

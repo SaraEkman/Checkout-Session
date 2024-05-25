@@ -13,7 +13,6 @@ function App() {
 
 
   useEffect(() => {
-    console.log("useEffect", user)
     const authorize = async () => {
       const response = await fetch("http://localhost:3001/api/auth/authorize",
         {
@@ -29,7 +28,6 @@ function App() {
     }
     authorize()
   }, [])
-  console.log(user)
 
   const logout = async () => {
     const response = await fetch("http://localhost:3001/api/auth/logout", {
@@ -53,7 +51,6 @@ function App() {
   };
 
   const onFormSubmit = (data: IInputs) => {
-    console.log("onFormSubmit", data)
     setUser(data.name || data.email);
   };
 

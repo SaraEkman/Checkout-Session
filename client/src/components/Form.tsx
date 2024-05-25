@@ -35,9 +35,7 @@ const Form = ({ formType, onFormSubmit }: IFormProps) => {
     });
     const data = await response.json();
     if (response.status === 200) {
-      console.log(data);
       if (formType === 'register') {
-        console.log(data);
         setMessage(`Tack för registrering ${data.name || ''} logga in nu!`);
       } else { 
         localStorage.setItem("data", JSON.stringify(data));
