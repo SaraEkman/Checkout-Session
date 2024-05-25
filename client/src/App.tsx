@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import Form from './components/Form'
-import Payment from './components/Payment'
 import Products from './components/Products'
 import { CartProvider } from './context/CardContext'
 import { IInputs } from './modules/Types'
+import CartDisplay from './components/CartDisplay'
 
 
 function App() {
@@ -61,21 +61,21 @@ function App() {
   return (
     <> <CartProvider>
       <div>
-        <h1>{user  ? `INLOGGAD: ${user}` : "UTLOGGAD"}</h1>
+        <h1>{user ? `${user}` : ""}</h1>
         {!user ? (
           <>
             <button onClick={() => handleFormToggle('register')} className={`button button-register ${showForm === 'register' ? 'active' : ''}`}>
               Registrera
             </button>
             <button onClick={() => handleFormToggle('login')} className={`button button-login ${showForm === 'login' ? 'active' : ''}`}>
-              Login
+              Logga in
             </button>
             {showForm && <Form formType={showForm} onFormSubmit={onFormSubmit} />}
           </>
         ) : <>
-          <button onClick={logout} className="button logout-button">Logout</button>
+            <CartDisplay /> 
+          <button onClick={logout} className="button logout-button">Logga ut</button>
           <Products />
-          <Payment />
         </>}
       </div>
     </CartProvider>

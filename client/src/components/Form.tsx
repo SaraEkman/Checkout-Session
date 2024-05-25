@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IInputs } from "../modules/Types";
 interface IFormProps {
   formType: 'login' | 'register';
-  onFormSubmit: (user: IInputs) => void;
+  onFormSubmit?: (user: IInputs) => void;
 }
 
 const Form = ({ formType, onFormSubmit }: IFormProps) => {
@@ -16,7 +16,9 @@ const Form = ({ formType, onFormSubmit }: IFormProps) => {
     line1: "",
     postal_code: ""
   }
-});
+  });
+  const [message, setMessage] = useState("");
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const endpoint = `http://localhost:3001/api/auth/${formType}`;
@@ -32,10 +34,20 @@ const Form = ({ formType, onFormSubmit }: IFormProps) => {
       body: JSON.stringify(body)
     });
     const data = await response.json();
-    console.log(data);
     if (response.status === 200) {
-      localStorage.setItem("data", JSON.stringify(data));
-      onFormSubmit(data);
+      console.log(data);
+      if (formType === 'register') {
+        console.log(data);
+        setMessage(`Tack för registrering ${data.name || ''} logga in nu!`);
+      } else { 
+        localStorage.setItem("data", JSON.stringify(data));
+        if (onFormSubmit) {
+          onFormSubmit(data);
+        }
+      }
+
+    } else { 
+      setMessage(data.message || data.error ||"Något gick fel. Försök igen.");
     }
   };
 
@@ -75,6 +87,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         <button className="button" type="submit">
           {formType === "login" ? "Login" : "Register"}
         </button>
+        {message && <p className="message">{message}</p>}
       </form>
     </div>
   );

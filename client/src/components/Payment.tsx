@@ -1,4 +1,5 @@
 import { useCart } from "../context/CardContext";
+import "../styles/Payment.css";
 
 const Payment = () => {
   const { cart } = useCart();
@@ -32,8 +33,10 @@ const Payment = () => {
 
   
 
-  return <div>
-      <button onClick={handlePayment}>Pay Now</button>
+  return <div className="payment-container">
+      <button className="payment-button" onClick={handlePayment}>
+        Betala nu
+      </button>
     </div>;
 };
 
