@@ -28,15 +28,14 @@ const Form = ({ formType, onFormSubmit }: IFormProps) => {
     const response = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify(body)
     });
     const data = await response.json();
     console.log(data);
     if (response.status === 200) {
+      localStorage.setItem("data", JSON.stringify(data));
       localStorage.setItem("customerId", data.customerId.toString());
-      if (data.address) {
-        localStorage.setItem("address", JSON.stringify(data.address));
-      }
       onFormSubmit(data);
     }
   };

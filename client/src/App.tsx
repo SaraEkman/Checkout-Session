@@ -8,7 +8,7 @@ import { IInputs } from './modules/Types'
 
 
 function App() {
-  const [user, setUser] = useState<IInputs | null>(null);
+  const [user, setUser] = useState<string>("")
   const [showForm, setShowForm] = useState<'login' | 'register' | null>(null);
 
 
@@ -22,9 +22,9 @@ function App() {
 
       const data = await response.json()
       if (response.status === 200) {
-        setUser(data)
+        setUser(data.name || data.email)
       } else {
-        setUser(null)
+        setUser("")
       }
     }
     authorize()
@@ -38,26 +38,31 @@ function App() {
     })
 
     if (response.status === 200) {
-      setUser(null)
+      setUser("")
       localStorage.removeItem("customerId")
       localStorage.removeItem("sessionId")
-      localStorage.removeItem("address")
+      localStorage.removeItem("data")
     }
     setShowForm(null);
   }
 
   const handleFormToggle = (formType: 'login' | 'register') => {
-    if (user && user.email) {
+    if (user) {
       return; 
     }
     setShowForm(prevState => prevState === formType ? null : formType);
+  };
+
+  const onFormSubmit = (data: IInputs) => {
+    console.log("onFormSubmit", data)
+    setUser(data.name || data.email);
   };
 
 
   return (
     <> <CartProvider>
       <div>
-        <h1>{user && user.email ? `INLOGGAD: ${user.email}` : "UTLOGGAD"}</h1>
+        <h1>{user  ? `INLOGGAD: ${user}` : "UTLOGGAD"}</h1>
         {!user ? (
           <>
             <button onClick={() => handleFormToggle('register')} className={`button button-register ${showForm === 'register' ? 'active' : ''}`}>
@@ -66,7 +71,7 @@ function App() {
             <button onClick={() => handleFormToggle('login')} className={`button button-login ${showForm === 'login' ? 'active' : ''}`}>
               Login
             </button>
-            {showForm && <Form formType={showForm} onFormSubmit={setUser} />}
+            {showForm && <Form formType={showForm} onFormSubmit={onFormSubmit} />}
           </>
         ) : <>
           <button onClick={logout} className="button logout-button">Logout</button>

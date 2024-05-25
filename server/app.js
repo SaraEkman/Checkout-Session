@@ -38,6 +38,7 @@ app.use(cookieSession({
 
 app.use(function (req, res, next) {
   console.log('Cookies:', req.cookies);
+  console.log("Session: ", req.session);
   next();
 });
 

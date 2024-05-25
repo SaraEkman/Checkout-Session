@@ -2,8 +2,15 @@ POST http://localhost:3001/api/auth/register
 Content-Type: application/json
 
 {
+    "name": "Sara",
     "email": "sara@gmail.com",
-    "password": "ss"
+    "password": "ss",
+    "address": {
+        "city": "San Francisco",
+        "country": "Sweden",
+        "line1": "123 Main St",
+        "postal_code": "94105"
+    }
 }
 
 ###
@@ -11,7 +18,7 @@ POST http://localhost:3001/api/auth/login
 Content-Type: application/json
 
 {
-    "email": "sara@gmail.com",
+    "email": "ss@gmail.com",
     "password": "ss"
 }
 
