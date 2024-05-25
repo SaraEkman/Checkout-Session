@@ -1,3 +1,14 @@
 [
-  
+  {
+    "customerId": "cus_QAiBQGh2ytJK2J",
+    "name": "Sara Ekman",
+    "email": "sara@gmail.com",
+    "password": "$2b$10$e1Crv6MUST3/0exsaOgCJOJntXL3lSAwwdg4E4Nx2IX2HU1WR.2fG",
+    "address": {
+      "city": "Box 2777",
+      "country": "Sverige",
+      "line1": "lindgata",
+      "postal_code": "98246"
+    }
+  }
 ]
