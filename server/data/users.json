@@ -10,5 +10,17 @@
       "line1": "Box 2820",
       "postal_code": "403 20"
     }
+  },
+  {
+    "customerId": "cus_QAcsUNFMZCol6b",
+    "name": "Sara Ekman",
+    "email": "aa@gmail.com",
+    "password": "$2b$10$tUopvxSZL1vxDNVj7MC7Tug0L35gFslfKAgqnmkeFjpSWc5orPTty",
+    "address": {
+      "city": "Box 2820",
+      "country": "Sverige",
+      "line1": "Box 2820",
+      "postal_code": "403 20"
+    }
   }
 ]

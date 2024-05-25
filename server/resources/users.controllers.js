@@ -1,4 +1,5 @@
 const fetchUsers = require("../utils/fetchUsers");
+const initStripe = require("../stripe");
 
 const getUsers = async (req, res) => {
 
@@ -11,4 +12,13 @@ const getUsers = async (req, res) => {
     res.status(200).json(users);
 };
 
-module.exports = { getUsers };
+const getCustomers = async (req, res) => {
+    const stripe = initStripe();
+    const customers = await stripe.customers.list({
+        limit: 10,
+    });
+
+    res.status(200).json(customers);
+};
+
+module.exports = { getUsers, getCustomers };

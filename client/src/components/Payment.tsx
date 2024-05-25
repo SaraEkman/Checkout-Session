@@ -1,5 +1,19 @@
+import { useCart } from "../context/CardContext";
+
 const Payment = () => {
+  const { cart } = useCart();
+  
+
   const handlePayment = async () => {
+    
+    const userData = JSON.parse(localStorage.getItem("data") || "{}");
+    
+    console.log("userData", userData);
+    const items = cart.map(item => ({
+      price: item.default_price.id,
+      quantity: item.quantity
+    }));
+
     const response = await fetch(
       "http://localhost:3001/api/stripe/create-checkout-session",
       {
@@ -7,28 +21,20 @@ const Payment = () => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify([
-          {
-            product: "price_1PAYwGP46Bs56q5IcWErEpEV",
-            quantity: 3
-          },
-          {
-            product: "price_1PAYvqP46Bs56q5I3HqJX4PL",
-            quantity: 1
-          }
-        ])
+        body: JSON.stringify({ userData, items })
       }
     );
+
     const data = await response.json();
-    localStorage.setItem("sessionId", JSON.stringify(data.sessionId));
-    window.location = data.url;
+    localStorage.setItem("sessionId", data.sessionId);
+    window.location.href = data.url;
   };
 
-  return (
-    <div>
-      <button onClick={handlePayment}>GE MIG PENGAR!!!!</button>
-    </div>
-  );
+  
+
+  return <div>
+      <button onClick={handlePayment}>Pay Now</button>
+    </div>;
 };
 
 export default Payment;

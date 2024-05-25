@@ -35,7 +35,6 @@ const Form = ({ formType, onFormSubmit }: IFormProps) => {
     console.log(data);
     if (response.status === 200) {
       localStorage.setItem("data", JSON.stringify(data));
-      localStorage.setItem("customerId", data.customerId.toString());
       onFormSubmit(data);
     }
   };

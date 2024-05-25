@@ -39,7 +39,6 @@ function App() {
 
     if (response.status === 200) {
       setUser("")
-      localStorage.removeItem("customerId")
       localStorage.removeItem("sessionId")
       localStorage.removeItem("data")
     }

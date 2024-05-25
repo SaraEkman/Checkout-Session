@@ -1,7 +1,10 @@
 POST http://localhost:3001/api/stripe/create-checkout-session 
 Content-Type: application/json
 
-[
+
+  {"customerId": "cus_Q8SvGZA6KeL3Hg",
+        [
+
           {
             "product": "price_1OjJm3KDYG89Sk1MV6TKHCWy",
             "quantity": 3
@@ -10,13 +13,15 @@ Content-Type: application/json
             "product": "price_1OjJkTKDYG89Sk1MeWycVhcr",
             "quantity": 1
         }]
+  }
+
 
 ###
 POST http://localhost:3001/api/stripe/verify-session    
 Content-Type: application/json
 
 {
-    "sessionId": "cs_test_b1kJU2XA8z0h9dZ3EnZIKbp8X4ftKkQzhflxtJ2JV3TRnkmBtOeqetR1js"
+    "sessionId": "cs_test_b1VY0wOiE5eodr4iuODQah94IYRYtpJeW9kkSyPYylX3nZuhftUV70WOeE"
 }
 
 ###

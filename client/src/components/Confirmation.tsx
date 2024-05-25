@@ -29,6 +29,7 @@ useEffect(
             if (response.ok) {
               setVerified(data.verified);
               setIsLoading(false);
+              localStorage.removeItem("address");
             }
           }
         } catch (error) {

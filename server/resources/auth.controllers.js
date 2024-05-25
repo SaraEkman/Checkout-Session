@@ -58,7 +58,7 @@ const login = async (req, res) => {
     req.session.user = userExists;
     //Skicka tillbaka ett svar
 
-    console.log("från log in ", req.session);
+    // console.log("från log in ", req.session);
     const customer = await stripe.customers.retrieve(userExists.customerId);
     res.status(200).json({ name: userExists.name, email: userExists.email, customerId: customer.id, address: customer.address});
 
@@ -74,7 +74,7 @@ const authorize = (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({ error: "Unauthorized" });
     }
-    res.status(200).json({ email: req.session.user.email, customerId: req.session.user.customerId});
+    res.status(200).json({ name: req.session.user.name, email: req.session.user.email, customerId: req.session.user.customerId, address: req.session.user.address});
 };
 
 module.exports = { register, login, logout, authorize };

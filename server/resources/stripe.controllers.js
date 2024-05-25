@@ -3,16 +3,18 @@ const fs = require("fs").promises;
 
 const createCheckoutSession = async (req, res) => {
 
-    const cart = req.body;
+    const cart = req.body.items;
 
     const stripe = initStripe();
 
+    console.log("session från createCheckoutSession", req.body);
+
     const session = await stripe.checkout.sessions.create({
         mode: "payment",
-
+        customer: req.body.userData.customerId,
         line_items: cart.map(item => {
             return {
-                price: item.product,
+                price: item.price,
                 quantity: item.quantity
             };
         }),
@@ -20,7 +22,7 @@ const createCheckoutSession = async (req, res) => {
         cancel_url: "http://localhost:3000",
     });
 
-    console.log(cart);
+    // console.log(cart);
     console.log(session);
     res.status(200).json({ url: session.url, sessionId: session.id });
 
@@ -32,7 +34,7 @@ const verifySession = async (req, res) => {
     console.log("Nu kommer jag hit");
 
     const sessionId = req.body.sessionId;
-    console.log(sessionId);
+    console.log(sessionId, "sessionID", req.body, "req.body");
 
     const session = await stripe.checkout.sessions.retrieve(sessionId);
     console.log(session);
@@ -45,9 +47,11 @@ const verifySession = async (req, res) => {
         const order = {
             orderNumber: Math.floor(Math.random() * 100000000),
             customerName: session.customer_details.name,
-            products: lineItems.data,
+            email: session.customer_details.email,
+            date: new Date(),
+            address: session.customer_details.address,
             total: session.amount_total,
-            date: new Date()
+            products: lineItems.data,
         };
 
         console.log("orddddddddddddddddder", order);
@@ -64,7 +68,7 @@ const verifySession = async (req, res) => {
 const fetchAllProducts = async (req, res) => {
     const stripe = initStripe();
     const products = await stripe.products.list({ expand: ['data.default_price'] });
-    console.log(products.data);
+    // console.log(products.data);
     res.status(200).json(products.data);
 };
 
