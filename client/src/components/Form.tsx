@@ -85,7 +85,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         <input className="input-field" name="email" type="email" placeholder="Email" autoComplete="off" value={inputs.email} onChange={handleChange} />
         <input className="input-field" name="password" type="password" placeholder="Password" autoComplete="off" value={inputs.password} onChange={handleChange} />
         <button className="button" type="submit">
-          {formType === "login" ? "Login" : "Register"}
+          {formType === "login" ? "Logga in" : "Registrera"}
         </button>
         {message && <p className="message">{message}</p>}
       </form>

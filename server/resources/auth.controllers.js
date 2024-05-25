@@ -37,7 +37,7 @@ const register = async (req, res) => {
     await fs.writeFile("./data/users.json", JSON.stringify(users, null, 2));
 
     //Skicka tillbaka ett svar
-    res.status(200).json({ name: newUser.name, email: newUser.email, customerId: customer.id, address: newUser.address});
+    res.status(200).json({ message: "User created", name: name});
 };
 
 const login = async (req, res) => {
