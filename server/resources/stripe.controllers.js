@@ -26,41 +26,6 @@ const createCheckoutSession = async (req, res) => {
     res.status(200).json({ url: session.url, sessionId: session.id });
 };
 
-// const verifySession = async (req, res) => {
-//     const stripe = initStripe();
-
-//     console.log("Nu kommer jag hit");
-
-//     const sessionId = req.body.sessionId;
-//     console.log(sessionId, "sessionID", req.body, "req.body");
-
-//     const session = await stripe.checkout.sessions.retrieve(sessionId);
-//     console.log(session);
-
-//     if (session.payment_status === "paid") {
-//         const lineItems = await stripe.checkout.sessions.listLineItems(sessionId);
-//         console.log(lineItems);
-
-
-//         const order = {
-//             orderNumber: Math.floor(Math.random() * 100000000),
-//             customerName: session.customer_details.name,
-//             email: session.customer_details.email,
-//             date: new Date(),
-//             address: session.customer_details.address,
-//             total: session.amount_total,
-//             products: lineItems.data,
-//         };
-
-//         const orders = JSON.parse(await fs.readFile("./data/orders.json"));
-//         orders.push(order);
-//         await fs.writeFile("./data/orders.json", JSON.stringify(orders, null, 4));
-
-//         res.status(200).json({ verified: true });
-//     }
-
-// };
-
 const verifySession = async (req, res) => {
     const stripe = initStripe();
     const sessionId = req.body.sessionId;
